@@ -8,6 +8,7 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "postinstall": "npx prisma generate",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'No lint configured yet'",
     "db:migrate": "prisma migrate dev",

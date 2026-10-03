@@ -1,6 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.routes';
 import clientRoutes from './routes/client.routes';
@@ -13,17 +13,20 @@ import activityRoutes from './routes/activity.routes';
 import notificationRoutes from './routes/notification.routes';
 import { errorHandler } from './middleware/errorHandler';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || process.env.CORS_ORIGIN;
-
-export function createApp(): express.Application {
+export function createApp(corsOptions?: CorsOptions): express.Application {
   const app = express();
 
   app.use(helmet());
   app.use(
-    cors({
-      origin: FRONTEND_URL || 'http://localhost:3000',
-      credentials: true,
-    })
+    cors(
+      corsOptions ?? {
+        origin:
+          process.env.CORS_ORIGIN ||
+          process.env.FRONTEND_URL ||
+          'http://localhost:3000',
+        credentials: true,
+      }
+    )
   );
   app.use(express.json({ limit: '10kb' }));
 
